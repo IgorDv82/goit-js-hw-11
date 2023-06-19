@@ -10,6 +10,7 @@ p {
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 15px;
 }
 
 .photo-card {
@@ -52,7 +53,23 @@ p {
 .search-form {
   padding-top: 5px;
   padding-bottom: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   text-align: center;
   background-color: #43da30;
+}
+
+.load-more {
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  margin: 0px auto 15px;
+  padding: 5px;
+  background-color: #43da30;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+}
+
+.is-hidden {
+  display: none;
 }

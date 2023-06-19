@@ -8,9 +8,13 @@ import './CSS/style.css';
 const formEl = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
 const loadMore = document.querySelector('.load-more');
+loadMore.classList.add('is-hidden');
+
 let query = '';
+let page = 1;
 
 formEl.addEventListener('submit', hendlerSubmit);
+loadMore.addEventListener('click', hendlerClick);
 
 let lightbox = new SimpleLightbox('.gallery a');
 
@@ -22,6 +26,12 @@ function renderMarkup(data) {
       { position: 'center-center' }
     );
     return;
+  }
+  if (page <= 1) {
+      Notify.success(`Hooray! We found ${totalHits} images.`, {
+        position: 'center-top',
+        timeout: 1000,
+      });
   }
   const markup = hits
     .map(
@@ -59,20 +69,36 @@ function renderMarkup(data) {
     .join('');
   gallery.insertAdjacentHTML('beforeend', markup);
   lightbox.refresh();
+  loadMore.classList.remove('is-hidden');
 }
 
 function hendlerSubmit(e) {
   e.preventDefault();
   query = e.currentTarget.elements.searchQuery.value;
   if (query.trim() === '') {
+    resetAll();
     Notify.info('Please, fill in key-word for searching.', {
       position: 'center-center',
+      timeout: 1000,
     });
     return;
   }
-  getPictures(query)
+  resetAll();
+  getPictures(query, page)
     .then(data => renderMarkup(data))
     .catch(e => Report.failure('Sorry...', 'Please try again.'));
+}
+
+function resetAll() {
   formEl.reset();
   gallery.innerHTML = '';
+  loadMore.classList.add('is-hidden');
+  page = 1;
+}
+
+function hendlerClick(e) {
+  page += 1;
+  getPictures(query, page)
+    .then(data => renderMarkup(data))
+    .catch(e => Report.failure('Sorry...', 'Please try again.'));
 }

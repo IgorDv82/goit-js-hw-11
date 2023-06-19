@@ -6,7 +6,7 @@ const IMAGE_TYPE = 'photo';
 const ORIENTATION = 'horizontal';
 const PER_PAGE = 40;
 
-export async function getPictures(request = '', p = 1) {
+export async function getPictures(request = '', loadPage = 1) {
   return await axios
     .get(`${BASE_URL}`, {
       params: {
@@ -16,7 +16,7 @@ export async function getPictures(request = '', p = 1) {
         orientation: ORIENTATION,
         safesearch: true,
         per_page: PER_PAGE,
-        page: p,
+        page: loadPage,
       },
       headers: {},
     })
