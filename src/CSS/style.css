@@ -1,0 +1,58 @@
+p {
+  margin: 0;
+}
+.gallery {
+  display: grid;
+  max-width: 1140px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-auto-rows: 240px;
+  grid-gap: 12px;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.photo-card {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0, 0, 0, 0.14),
+    0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.info {
+  display: flex;
+  gap: 10px;
+  height: max-content;
+  justify-content: center;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+}
+
+.photo {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.link {
+  position: relative;
+  min-height: 200px;
+}
+
+.search-form {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+  background-color: #43da30;
+}
