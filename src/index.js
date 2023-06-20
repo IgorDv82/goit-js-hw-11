@@ -4,6 +4,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './CSS/style.css';
+import { PER_PAGE } from './pixabay-api';
 
 const formEl = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
@@ -14,8 +15,6 @@ endOfSearch.classList.add('is-hidden');
 
 let query = '';
 let page = 1;
-const per_page = 40;
-let lastPage = 0;
 
 formEl.addEventListener('submit', hendlerSubmit);
 loadMore.addEventListener('click', hendlerClick);
@@ -37,7 +36,7 @@ function renderMarkup(data) {
       timeout: 1000,
     });
   }
-  loadedPhoto = page * per_page;
+  loadedPhoto = page * PER_PAGE;
 
   if (loadedPhoto <= totalHits) {
     makeMarkup(hits);
