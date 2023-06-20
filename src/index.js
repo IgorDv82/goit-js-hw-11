@@ -10,8 +10,6 @@ const formEl = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
 const loadMore = document.querySelector('.load-more');
 const endOfSearch = document.querySelector('.theEnd');
-loadMore.classList.add('is-hidden');
-endOfSearch.classList.add('is-hidden');
 
 let query = '';
 let page = 1;
