@@ -18,7 +18,9 @@ export async function getPictures(request = '', loadPage = 1) {
         per_page: PER_PAGE,
         page: loadPage,
       },
-      headers: {},
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
     .then(resp => resp.data);
 }

@@ -73,3 +73,12 @@ p {
 .is-hidden {
   display: none;
 }
+
+.theEnd {
+  padding: 5px 0;
+  text-align: center;
+  margin: 0 auto 15px;
+  font-size: 20px;
+  color: #ffffff;
+  background-color: #43da30;
+}

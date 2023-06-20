@@ -8,10 +8,13 @@ import './CSS/style.css';
 const formEl = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
 const loadMore = document.querySelector('.load-more');
+const body = document.querySelector('body');
 loadMore.classList.add('is-hidden');
 
 let query = '';
 let page = 1;
+const per_page = 40;
+let loadedPhoto = 0;
 
 formEl.addEventListener('submit', hendlerSubmit);
 loadMore.addEventListener('click', hendlerClick);
@@ -28,22 +31,25 @@ function renderMarkup(data) {
     return;
   }
   if (page <= 1) {
-      Notify.success(`Hooray! We found ${totalHits} images.`, {
-        position: 'center-top',
-        timeout: 1000,
-      });
+    Notify.success(`Hooray! We found ${totalHits} images.`, {
+      position: 'center-top',
+      timeout: 1000,
+    });
   }
-  const markup = hits
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => `<div class="photo-card">
+  loadedPhoto = page * per_page;
+
+  if (loadedPhoto <= totalHits) {
+    const markup = hits
+      .map(
+        ({
+          webformatURL,
+          largeImageURL,
+          tags,
+          likes,
+          views,
+          comments,
+          downloads,
+        }) => `<div class="photo-card">
   <a href="${largeImageURL}" class="link">
   <img class="photo" src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
   <div class="info">
@@ -65,11 +71,18 @@ function renderMarkup(data) {
     </p>
   </div>
 </div>`
-    )
-    .join('');
-  gallery.insertAdjacentHTML('beforeend', markup);
-  lightbox.refresh();
-  loadMore.classList.remove('is-hidden');
+      )
+      .join('');
+    gallery.insertAdjacentHTML('beforeend', markup);
+    lightbox.refresh();
+    loadMore.classList.remove('is-hidden');
+  } else {
+    loadMore.classList.add('is-hidden');
+    const text = `<p class="theEnd">
+        We're sorry, but you've reached the end of search results.
+      </p>`;
+    body.insertAdjacentHTML('beforeend', text);
+  }
 }
 
 function hendlerSubmit(e) {
