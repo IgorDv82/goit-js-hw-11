@@ -1,10 +1,9 @@
-import { getPictures } from './pixabay-api';
+import { getPictures, PER_PAGE } from './pixabay-api';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './CSS/style.css';
-import { PER_PAGE } from './pixabay-api';
 
 const formEl = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
@@ -13,7 +12,7 @@ const endOfSearch = document.querySelector('.theEnd');
 
 let query = '';
 let page = 1;
-
+console.log(PER_PAGE);
 formEl.addEventListener('submit', hendlerSubmit);
 loadMore.addEventListener('click', hendlerClick);
 
@@ -68,7 +67,7 @@ function resetAll() {
   formEl.reset();
   gallery.innerHTML = '';
   loadMore.classList.add('is-hidden');
-  endOfSearch.classList.add('is-hidden');
+  // endOfSearch.classList.add('is-hidden');
   page = 1;
 }
 
