@@ -41,6 +41,7 @@ function renderMarkup(data) {
     loadMore.classList.remove('is-hidden');
   } else {
     makeMarkup(hits);
+    lightbox.refresh();
     loadMore.classList.add('is-hidden');
     endOfSearch.classList.remove('is-hidden');
   }
@@ -50,26 +51,25 @@ function hendlerSubmit(e) {
   e.preventDefault();
   query = e.currentTarget.elements.searchQuery.value;
   if (query.trim() === '') {
-    resetAll();
+    formEl.reset();
+    gallery.innerHTML = '';
+    page = 1;
+    loadMore.classList.add('is-hidden');
+    endOfSearch.classList.add('is-hidden');
     Notify.info('Please, fill in key-word for searching.', {
       position: 'center-center',
       timeout: 1000,
     });
     return;
   }
-
+  gallery.innerHTML = '';
+  page = 1;
   getPictures(query, page)
     .then(data => renderMarkup(data))
     .catch(e => Report.failure('Sorry...', 'Please try again.'));
-  resetAll();
-}
-
-function resetAll() {
   formEl.reset();
-  gallery.innerHTML = '';
   loadMore.classList.add('is-hidden');
   endOfSearch.classList.add('is-hidden');
-  page = 1;
 }
 
 function hendlerClick(e) {
