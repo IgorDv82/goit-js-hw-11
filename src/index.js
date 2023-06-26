@@ -57,17 +57,18 @@ function hendlerSubmit(e) {
     });
     return;
   }
-  resetAll();
+
   getPictures(query, page)
     .then(data => renderMarkup(data))
     .catch(e => Report.failure('Sorry...', 'Please try again.'));
+  resetAll();
 }
 
 function resetAll() {
   formEl.reset();
   gallery.innerHTML = '';
   loadMore.classList.add('is-hidden');
-  // endOfSearch.classList.add('is-hidden');
+  endOfSearch.classList.add('is-hidden');
   page = 1;
 }
 
