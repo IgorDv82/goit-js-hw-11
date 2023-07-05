@@ -1,14 +1,13 @@
+import { refs } from './refs';
 import { getPictures, PER_PAGE } from './pixabay-api';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { makeMarkup } from './makeMarkup';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './CSS/style.css';
 
-const formEl = document.querySelector('.search-form');
-const gallery = document.querySelector('.gallery');
-const loadMore = document.querySelector('.load-more');
-const endOfSearch = document.querySelector('.theEnd');
+const { formEl, gallery, loadMore, endOfSearch } = refs;
 
 let query = '';
 let page = 1;
@@ -34,13 +33,12 @@ function renderMarkup(data) {
     });
   }
   let loadedPhoto = page * PER_PAGE;
-
   if (loadedPhoto <= totalHits) {
-    makeMarkup(hits);
+    gallery.insertAdjacentHTML('beforeend', makeMarkup(hits));
     lightbox.refresh();
     loadMore.classList.remove('is-hidden');
   } else {
-    makeMarkup(hits);
+    gallery.insertAdjacentHTML('beforeend', makeMarkup(hits));
     lightbox.refresh();
     loadMore.classList.add('is-hidden');
     endOfSearch.classList.remove('is-hidden');
@@ -51,25 +49,17 @@ function hendlerSubmit(e) {
   e.preventDefault();
   query = e.currentTarget.elements.searchQuery.value;
   if (query.trim() === '') {
-    formEl.reset();
-    gallery.innerHTML = '';
-    page = 1;
-    loadMore.classList.add('is-hidden');
-    endOfSearch.classList.add('is-hidden');
+    resetAll();
     Notify.info('Please, fill in key-word for searching.', {
       position: 'center-center',
       timeout: 1000,
     });
     return;
   }
-  gallery.innerHTML = '';
-  page = 1;
+  resetAll();
   getPictures(query, page)
     .then(data => renderMarkup(data))
     .catch(e => Report.failure('Sorry...', 'Please try again.'));
-  formEl.reset();
-  loadMore.classList.add('is-hidden');
-  endOfSearch.classList.add('is-hidden');
 }
 
 function hendlerClick(e) {
@@ -79,40 +69,10 @@ function hendlerClick(e) {
     .catch(err => Report.failure('Sorry...', 'Please try again.'));
 }
 
-function makeMarkup(arr) {
-  const markup = arr
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => `<div class="photo-card">
-  <a href="${largeImageURL}" class="link">
-  <img class="photo" src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
-  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>
-      <span>${likes}</span>
-    </p>
-    <p class="info-item">
-      <b>Views</b>
-      <span>${views}</span>
-    </p>
-    <p class="info-item">
-      <b>Comments</b>
-      <span>${comments}</span>
-    </p>
-    <p class="info-item">
-      <b>Downloads</b>
-      <span>${downloads}</span>
-    </p>
-  </div>
-</div>`
-    )
-    .join('');
-  gallery.insertAdjacentHTML('beforeend', markup);
+function resetAll() {
+  formEl.reset();
+  gallery.innerHTML = '';
+  page = 1;
+  loadMore.classList.add('is-hidden');
+  endOfSearch.classList.add('is-hidden');
 }
